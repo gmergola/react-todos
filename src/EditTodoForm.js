@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-function EditTodoForm({ editTodo, idx, task, hideEditForm }){
+function EditTodoForm({ editTodo, id, task, hideEditForm }){
   const [editTask, setEditTask] = useState(task);
 
   // handleSubmit: calls property funciton addTodo on a task
   function handleSubmit(evt) {
     evt.preventDefault();
-    editTodo(editTask, idx);
+    editTodo(editTask, id);
     setEditTask('');
     hideEditForm()
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import TodoList from './TodoList';
-
+import { deleteLabel } from './Todo';
 
 
 it("renders without crashing", function() {
@@ -12,7 +12,6 @@ it("matches snapshot", function() {
   const { asFragment } = render(<TodoList />);
   expect(asFragment()).toMatchSnapshot();
 })
-
 
 
 describe("adding/removing/editing tasks", function () {
@@ -33,17 +32,17 @@ describe("adding/removing/editing tasks", function () {
   })
   
   it("can remove an existing task", function () {
-    const removeBtn = renderedTodoList.queryByText("X");
+    const removeBtn = renderedTodoList.queryByText(deleteLabel);
     
     fireEvent.click(removeBtn);
-    expect(renderedTodoList.queryByText("X")).not.toBeInTheDocument();
+    expect(renderedTodoList.queryByText(deleteLabel)).not.toBeInTheDocument();
   })
 
   it("can edit an existing task", function(){
     const editBtn = renderedTodoList.queryByText('Edit');
     fireEvent.click(editBtn);
 
-    const editTaskInput = renderedTodoList.getByLabelText("Edit Task:");
+    const editTaskInput = renderedTodoList.getByDisplayValue("Say Hello!");
     const submitBtn = renderedTodoList.queryByText("Edit Todo");
 
     expect(editTaskInput).toBeInTheDocument();
@@ -52,6 +51,7 @@ describe("adding/removing/editing tasks", function () {
     fireEvent.change(editTaskInput, { target: { value: "!" }});
     fireEvent.click(submitBtn);
     
+
     expect(editTaskInput).not.toBeInTheDocument();
     expect(renderedTodoList.queryByText("!")).toBeInTheDocument();
   });

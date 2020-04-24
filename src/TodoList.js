@@ -9,20 +9,39 @@ function TodoList(){
 
   // addTodo: Adds a Todo to state
   function addTodo(task) {
-    const newTodo = {task, id: uuid() };
+    const newTodo = {task, completed: false, id: uuid() };
     setTodos(oldTodos => [...oldTodos, newTodo]);
   }
 
-  // pass id instead, use a map
   // editTodo: Edits a todo from state
-  function editTodo(updatesTask, idx){
+  function editTodo(updatesTask, id){
     setTodos(oldTodos => {
-      const todosCopy = [...oldTodos];
-      todosCopy[idx] = {
-          ...todosCopy[idx],
-          task: updatesTask
-      }
-      return todosCopy;
+      return oldTodos.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            task: updatesTask
+          }
+        } else {
+          return todo;
+        }
+      })
+    });
+  }
+
+  // completeTodo: Completes a todo from state
+  function completeTodo(id){
+    setTodos(oldTodos => {
+      return oldTodos.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            completed: true
+          }
+        } else {
+          return todo;
+        }
+      })
     });
   }
 
@@ -38,9 +57,10 @@ function TodoList(){
           id={todo.id}
           removeTodo={removeTodo}
           editTodo={editTodo}
+          completeTodo={completeTodo}
           task={todo.task}
+          completed={todo.completed}
           key={todo.id}
-          idx={idx}
         />
       )
     })

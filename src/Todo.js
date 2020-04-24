@@ -3,7 +3,7 @@ import EditTodoForm from './EditTodoForm';
 const deleteLabel = 'X';
 
 /**Todo: renders a todo and remove button */
-function Todo({ editTodo, removeTodo, task, id, idx }){
+function Todo({ editTodo, removeTodo, completeTodo, task, id, completed }){
   const [editing, setEditing] = useState(false);
 
   // handleRemove: removes todo on click
@@ -21,15 +21,24 @@ function Todo({ editTodo, removeTodo, task, id, idx }){
     setEditing(false);
   }
 
+  function markCompleted() {
+    completeTodo(id);
+  }
+
+  const textStyle = {
+    textDecoration: (completed) ? 'line-through' : 'none'
+  }
+
   return (
-    <div>
+    <div style={textStyle}>
       {task}
       <button onClick={handleRemove}>{deleteLabel}</button>
       <button onClick={showEditForm}>Edit</button>
+      <button onClick={markCompleted}>Mark as completed</button>
       {editing ? <EditTodoForm 
-      idx={idx} 
       editTodo={editTodo} 
       task={task} 
+      id={id}
       hideEditForm={hideEditForm}/> 
       : null}
     </div>
@@ -37,3 +46,4 @@ function Todo({ editTodo, removeTodo, task, id, idx }){
 }
 
 export default Todo;
+export { deleteLabel };
